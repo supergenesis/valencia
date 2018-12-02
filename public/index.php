@@ -5,6 +5,6 @@
 
     include_once("myApp/home.php");
 
-
+    print_r($valencia->apps['valencia']->applicationName);
 
 ?> 

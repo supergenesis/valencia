@@ -1,6 +1,6 @@
 <?php
     require_once "vendor/autoload.php";
-    require_once "app/model/main.php";
+    require_once "app/model/main_model.php";
 
-    $valencia = new VALENCIA\CoreClass();
+    $valencia = new VALENCIA\ValenciaClass();
 ?>

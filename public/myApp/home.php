@@ -1,9 +1,15 @@
 <html>
     <head>
-        <title>valencia</title>
+        <title>myApp by valencia</title>
     </head>
     <body>
-        Welkom!
+        Welkom!<br />
+
+        <ul>
+        {{ foreach book.name as title }}
+            <li>{{ echo title }}</li>
+        {{ next }}
+        </ul>
 
     </body>
 </html>

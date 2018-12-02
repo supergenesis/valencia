@@ -49,9 +49,61 @@ class DatabaseClass {
     }
 }
 
-class CoreClass {
+//**********
+//*
+//* This class is a Object Relational Mapper (ORM) for building datamodels
+//*
+//**********
+class OrmondClass {
+    public $applicationName;
+    public $limitTablesByPrefix;
+
+    public function __construct($applicationName, $limitTablesByPrefix = "") {
+        $this->applicationName = $applicationName;
+        $this->limitTablesByPrefix = $limitTablesByPrefix;
+        $this->model();
+    }
+
+    public function model() {
+        //make an objectmodel of the tables with a specific prefix
+    }
+
+}
+
+
+//**********
+//*
+//* This class is the main wrapper for a users application
+//*
+//**********
+class ApplicationClass {
+    public $applicationName;
+    public $limitTablesByPrefix;
+
+    public $orm;
+
+    public function __construct($applicationName) {
+        //fill required variables
+        $this->applicationName = $applicationName;
+    }
+
+    public function run() {
+        //actually do something, after all variables have been set
+        $this->orm = new OrmondClass($this->applicationName, $this->limitTablesByPrefix);
+    }
+
+}
+
+
+//**********
+//*
+//* This class provides control over the Valencia platform
+//*
+//**********
+class ValenciaClass {
     public $config;
     public $db;
+    public $apps;
 
     public function __construct() {
         $this->config = new ConfigClass();
@@ -59,9 +111,13 @@ class CoreClass {
         $this->db = new DatabaseClass(array($this->config->dbServer,$this->config->dbName,$this->config->dbUser,$this->config->dbPass,$this->config->dbTablePrefix));
         //$this->db = new DatabaseClass();
 
+        //create an array index for every application registered in the database
+        $this->apps = array("valencia" => new ApplicationClass("valencia") );
+        $name = "myApp";
+        $newArray = array( $name => new ApplicationClass($name) );
+        $this->apps = $this->apps + $newArray;
     }
 
 }
-
 
 ?>

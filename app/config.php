@@ -4,6 +4,6 @@ $dbServer = "localhost";
 $dbName = "valencia";
 $dbUser = "root";
 $dbPass = "";
-$dbTablePrefix = "first_";
+$dbTablePrefix = "valencia_";
 
 ?>
