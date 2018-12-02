@@ -1,10 +1,10 @@
 
 <?php
-    require_once "../model/loader.php";
+    require_once(__DIR__ . "/../loader.php");
     print_r($_SERVER['REQUEST_URI']);
 
-    include_once "app/home.php";
+    include_once("myApp/home.php");
 
-    echo $valencia->config->dbserver;
 
-?>
+
+?> 
