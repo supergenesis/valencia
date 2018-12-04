@@ -6,9 +6,9 @@
         Welkom!<br />
 
         <ul>
-        {{ foreach book.name as title }}
-            <li>{{ echo title }}</li>
-        {{ next }}
+        {{ for $title in $book.name }}
+            <li>{{ echo $title }}</li>
+        {{ endfor }}
         </ul>
 
     </body>

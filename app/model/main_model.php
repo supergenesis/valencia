@@ -2,6 +2,8 @@
 
 namespace VALENCIA;
 
+use Mysqli;
+
 require_once(__DIR__ . "/../config.php");
 
 class ConfigClass {
@@ -27,11 +29,16 @@ class ConfigClass {
 }
 
 class DatabaseClass {
+
+    //config variables
     public $dbServer;
     public $dbName;
     public $dbUser;
     public $dbPass;
     public $dbTablePrefix;
+
+    public $mysqli;
+    public $result;
 
     function __construct( $connectParam = NULL ) {
         if($connectParam !== NULL) {
@@ -43,10 +50,39 @@ class DatabaseClass {
             $this->connect();
         }
     }
-    
-    function connect() {
-        echo "connect to " . $this->dbServer . "<br />";
+
+    function __destruct() {
+        $this->mysqli->close();
     }
+    
+    public function connect() {
+        $this->mysqli = new mysqli($this->dbServer, $this->dbUser, $this->dbPass, $this->dbName);
+        if ($this->mysqli->connect_error) {
+            die("Connection failed: " . $this->mysqli->connect_error);
+        } 
+    }
+
+    public function runsql($sql) {
+        if( $this->result = $this->mysqli->query($sql) ) {
+            return $this->result;
+        } else {
+            die("shit");
+        }
+    }
+
+    public function getsingle($sql) {
+        if( $this->result = $this->mysqli->query($sql) ) {
+            if($this->result->num_rows > 0) {
+                $row = $this->result->fetch_row();
+                return $row[0];
+            } else {
+                return false;
+            }
+        } else {    
+            return false;
+        }
+    }
+
 }
 
 //**********

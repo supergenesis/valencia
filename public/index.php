@@ -1,10 +1,14 @@
 
 <?php
     require_once(__DIR__ . "/../loader.php");
-    print_r($_SERVER['REQUEST_URI']);
 
-    include_once("myApp/home.php");
-
-    print_r($valencia->apps['valencia']->applicationName);
+    $uri = substr($_SERVER['REQUEST_URI'], 1);
+    $target = $valencia->db->getsingle("SELECT target FROM `valencia_routes` WHERE uri='" . $uri . "'");
+    if( file_exists($target) ) {
+        include_once($target);
+    } else {
+        echo $uri . " does not exist";
+    }
 
 ?> 
+
