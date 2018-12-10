@@ -7,8 +7,9 @@
 
         <ul>
         {{ for $title in $book.name }}
-            <li>{{ echo $title }}</li>
+            <li>{{ $var = 1976; print $title }}</li>
         {{ endfor }}
+        {{ $war = 40+ $var }}
         </ul>
 
     </body>

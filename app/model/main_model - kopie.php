@@ -93,93 +93,15 @@ class DatabaseClass {
 class InterlakenClass {
     public $applicationName;
     public $limitTablesByPrefix;
-    public $vars = array();
-    public $output = array();
 
     public function __construct() {
         //nothing?
     }
 
-    private function transpose($src) {
-        $a = preg_split("/[^A-Za-z0-9_$]/", $src);
-        foreach($a as $b) {
-            if(substr($b,0,1) == "$") {
-                $src = str_replace($b, $this->vars[$b], $src);
-            }
-        }
-        return $src;
-    }
-
-    private function arithmics($src) {
-        
-        return $src;
-    }
-
-    private function interpret($lines) {
-        //if cansolve then solve else call new interpret
-        foreach($lines as $line) {
-            if(substr($line, 0, 2) == "{{") {
-                $line = trim(str_replace(";", "", substr($line, 2, -2)));
-                if($line[0] == "$") {
-                    $line = "set " . $line;
-                }
-                $instruction = substr($line, 0, stripos($line, " "));
-                $parameters = substr($line, stripos($line, " "));
-                switch($instruction) {
-                    case "set":
-                        $a = explode("=", $parameters);
-                        $a[0] = trim($a[0]);
-                        $a[1] = trim($a[1]);
-                        $a[1] = $this->transpose($a[1]); //fill in the vars
-                        $a[1] = $this->arithmics($a[1]); //calculate +*-/|&
-                        $this->vars[$a[0]] = $a[1];
-                        break;
-                    case "print":
-                        break;
-                    case "if":
-                        break;
-                    case "endif":
-                        break;
-                    case "for":
-                        break;
-                    case "endfor":
-                        break;
-                }
-            } else {
-                array_push($this->output, $line);
-            }
-        }
-        
-    }
-
     public function show($page) {
-
-        $file = file_get_contents($page);
-        $lines = array('');
-        $intag = false;
-        for($i=0; $i<=strlen($file); $i++) {
-            if(substr($file, $i, 2) == "{{") {
-                $intag = true;
-                array_push($lines, '');
-            }
-            $lines[count($lines)-1] .= substr($file, $i, 1);
-            if($intag and substr($file, $i, 1) == ";") {
-                $lines[count($lines)-1] .= "}}";
-                array_push($lines, '{{');
-            }
-            if($intag and substr($file, $i-1, 2) == "}}") {
-                $intag = false;
-                array_push($lines, '');
-            }
-        }
-        
-        $this->interpret($lines);
-
-        /*
         $handle = fopen($page, "r");
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
-                
                 if(stripos($line, "{{") and stripos($line, "}}")) {
 
                     while(stripos($line, "{{")) {
@@ -208,7 +130,6 @@ class InterlakenClass {
         } else {
             die("file '" . $page . "' does not exists or cannot be opened");
         } 
-        */
     }
 
 }
@@ -238,7 +159,7 @@ class OrmondClass {
 //**********
 //*
 //* This class is the main wrapper for a users application
-//* 
+//*
 //**********
 class ApplicationClass {
     public $applicationName;
